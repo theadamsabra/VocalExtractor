@@ -4,7 +4,7 @@ OVERVIEW OF APP:
     - View all channels at once, give option of viewing individual channels
     - Heirarchy of viewing
         - Waveform
-        - FFT/FCT Spectrum
+        - FFT/FCT Spectrum (Give option)
         - Spectrogram
         - MFCCs
     - Various snippet lengths with sliders (might be computationally expensive)
@@ -21,7 +21,13 @@ df = pd.DataFrame({
     'Col 2': [3,3,32,5]
     })
 
-# Can output when called. 
+
+'''
+Can output when called. This will allow the output functions to be leveraged
+easier. It can also be used for model engineering as well if deployed on a
+powerful enough server.
+'''
+
 'This is a dataframe!'
 df
 
