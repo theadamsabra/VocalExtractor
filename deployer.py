@@ -1,9 +1,15 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Jul 16 14:11:21 2020
-
-@author: 19512
-"""
+'''
+OVERVIEW OF APP:
+    - Upload multichannel song (look into file support)
+    - View all channels at once, give option of viewing individual channels
+    - Heirarchy of viewing
+        - Waveform
+        - FFT/FCT Spectrum
+        - Spectrogram
+        - MFCCs
+    - Various snippet lengths with sliders (might be computationally expensive)
+    - Use uploaded song for source separation? (Look into later)
+'''
 
 import streamlit as st
 import pandas as pd
@@ -15,10 +21,7 @@ df = pd.DataFrame({
     'Col 2': [3,3,32,5]
     })
 
+# Can output when called. 
+'This is a dataframe!'
+df
 
-if st.checkbox('Show dataframe'):
-    chart_data = pd.DataFrame(
-       np.random.randn(20, 3),
-       columns=['a', 'b', 'c'])
-
-    st.line_chart(chart_data)
