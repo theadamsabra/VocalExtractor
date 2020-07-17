@@ -4,5 +4,5 @@
 ### Checklist:
 - [ ] Complete first working model on Google CoLab notebook
 - [ ] Productionize model
-- [ ] Engineer model
+- [ ] Engineer model and formalize findings
 - [ ] Use streamlit for web app interface
