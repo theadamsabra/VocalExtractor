@@ -1,8 +1,10 @@
 # Audio Source Separation (Undergraduate Thesis)
- The repository of Adam Sabra's Undergraduate Thesis. In it, will contain an unsupervised model that attempts to separates Jazz songs into the horns, drums, piano, and bass.
+ The repository of Adam Sabra's Undergraduate Thesis. In it, will contain a deep learning archticture inteded to separate vocals from their songs.
  
 ### Checklist:
-- [ ] Complete first working model on Google CoLab notebook
-- [ ] Productionize model
-- [ ] Engineer model and formalize findings
-- [ ] Use streamlit for web app interface
+- [x] EDA + Data Transformation
+- [ ] Complete data preprocessing
+- [ ] Compare performance between CNN and LSTM
+- [ ] Tune selected model from above
+- [ ] Engineer model
+- [ ] Formalize findings and write paper
