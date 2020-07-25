@@ -5,6 +5,5 @@
 - [x] EDA + Data Transformation
 - [ ] Complete data preprocessing
 - [ ] Compare performance between CNN and LSTM
-- [ ] Tune selected model from above
-- [ ] Engineer model
+- [ ] Engineer selected model from above
 - [ ] Formalize findings and write paper
