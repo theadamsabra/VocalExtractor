@@ -8,6 +8,7 @@
 - [x] Dataset Retrieval (DSD100)
 - [x] EDA + Data Transformation
 - [ ] Preprocess all songs and build CNN to extract vocals then ensemble numerous models to retrieve other targets as well.
-- [ ] Engineer selected model from above
-- [ ] Create usable package from model
+- [ ] Engineer model
 - [ ] Formalize findings and write paper
+- [ ] Create usable package from model
+
