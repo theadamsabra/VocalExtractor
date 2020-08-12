@@ -13,3 +13,6 @@
 - [ ] Formalize findings and write paper
 - [ ] Create usable package from model
 
+## Key Details
+
+![image](https://github.com/theadamsabra/Audio-Source-Separation-Undergraduate-Thesis/blob/master/images/notes.png)
