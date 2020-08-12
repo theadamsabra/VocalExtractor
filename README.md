@@ -8,10 +8,11 @@
 ### Checklist:
 - [x] Dataset Retrieval (DSD100)
 - [x] EDA + Data Transformation
-- [ ] Preprocess all songs and build CNN to extract vocals then ensemble numerous models to retrieve other targets as well.
-- [ ] Engineer model
+- [ ] Preprocess all songs
+- [ ] Build CNN to extract vocals then ensemble numerous models to retrieve other targets as well.
+- [ ] Engineer and productionize model
 - [ ] Formalize findings and write paper
-- [ ] Create usable package from model
+- [ ] Document package
 
 ## Key Details
 
