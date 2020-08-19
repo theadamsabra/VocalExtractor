@@ -10,7 +10,7 @@ directory is structured. I chose to use a preprocessing class to keep things
 organized in one object.
 '''
 # Preprocessing class
-class Preprocessing:
+class Preprocess:
     # When initializing, we set up necessary constants needed for preprocessing.
     def __init__(self):
         self.sr = 44100 # Samplerate
