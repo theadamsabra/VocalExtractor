@@ -13,7 +13,3 @@
 - [ ] Engineer and productionize model
 - [ ] Formalize findings and write paper
 - [ ] Document package
-
-## Key Details
-
-![image](https://github.com/theadamsabra/Audio-Source-Separation-Undergraduate-Thesis/blob/master/images/notes.png)
