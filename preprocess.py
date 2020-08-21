@@ -14,23 +14,50 @@ organized in one object.
 
 class Preprocess:
     # When initializing, we set up necessary constants needed for preprocessing.
-    def __init__(self, target = 'vocals', sr = 44100, n_fft = 2048, n_mfcc = 13, hop_length = 512, num_chan = 2, 
-    dsd_path = 'C:\\Users\\19512\\Downloads\\DSD100\\DSD100', input_shape = None, 
-    data_path = 'C:\\Users\\19512\\OneDrive\\GitHub\\Audio-Source-Separation\\Audio-Source-Separation--Undergraduate-Thesis-\\data'):
+    def __init__(self, target,  dsd_path, data_path, sr = 44100, n_fft = 2048, n_mfcc = 13, hop_length = 512, num_chan = 2):
+        '''
+        Initalizing necessary information to preprocess DSD100 dataset.
+
+        Parameters:
+        -----------
+        - target: (str)
+        Target source of extraction. Can be either 'vocals', 'bass', 'drums', or 'other'.
+
+        -dsd_path: (str)
+        Path of the dataset.
+
+        -data_path: (str)
+        Path of where processed data is going to be stored.
+
+        - sr: (int, optional)
+        Samplerate of audio in question. Default set to 44100.
+
+        - n_fft: (int, optional)
+        Number of Fast Fourier Transformations to perform on audio. Default set to 2048.
+
+        -n_mfcc: (int, optional)
+        Number of MFCCs to find. Default set to 13.
+
+        -hop_length: (int, optional)
+        Number of points to slide over to slice audio. Best to be around a quarter of self.n_fft. Default set to 512.
+
+        -num_chan: (int,optional)
+        Number of channels in the audio. Default set to 2.
+        '''
+        self.data = { # Dictionary initalized to store MFCCs of Mixture and Target.
+            'Mixture MFCC': [],
+            'Target MFCC': []
+        }        
+        self.target = target # Target source extraction
         self.sr = sr # Samplerate
+        self.frame_length = int(self. sr / 4)
         self.n_fft = n_fft # Number of Fast Fourier Transforms we are performing
         self.n_mfcc = n_mfcc # Number of MFCCs we are incorperating
-        self.frame_length = int(self. sr / 4)
         self.hop_length = hop_length # How many points we're sliding over
         self.num_chan = num_chan # Number of channels of audio in question
         self.dsd_path = dsd_path # Path of DSD100
-        self.input_shape = input_shape # None for now, will be tuple of shape
-        self.data_path = data_path
-        self.target = target
-        self.data = {
-            'Mixture MFCC': [],
-            'Target MFCC': []
-        }
+        self.data_path = data_path # Path of where processed data will be stored
+
     def multi_mfcc(self, audio):
         '''
         The main objective of multi_mfcc is to take the MFCC of a multi-channel
@@ -45,12 +72,6 @@ class Preprocess:
         -----------
         - audio: (array)
         The audio we want to find the MFCCs of.
-
-        - start: (int)
-        An integer designating the starting point where we want to slice the audio.
-
-        - end: (int)
-        An integer designating the end point where we want to slice the audio
 
         Returns:
         --------
@@ -139,6 +160,9 @@ class Preprocess:
 
 # Main function
 if __name__ == "__main__":
-    pre = Preprocess()
-    for dev_test in ['Test', 'Dev']:
-        pre.preprocess(dev_test)
+    target = 'vocals'
+    dsd_path = 'C:\\Users\\19512\\Downloads\\DSD100\\DSD100'
+    data_path = 'C:\\Users\\19512\\OneDrive\\GitHub\\Audio-Source-Separation\\Audio-Source-Separation--Undergraduate-Thesis-\\data'
+    pre = Preprocess(target, dsd_path, data_path)
+    dev_test = 'Dev'
+    pre.preprocess(dev_test)
