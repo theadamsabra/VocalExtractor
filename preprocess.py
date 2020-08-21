@@ -16,6 +16,7 @@ class Preprocess:
         self.sr = sr # Samplerate
         self.n_fft = n_fft # Number of Fast Fourier Transforms we are performing
         self.n_mfcc = n_mfcc # Number of MFCCs we are incorperating
+        self.frame_length = int(self. sr / 4)
         self.hop_length = hop_length # How many points we're sliding over
         self.num_chan = num_chan # Number of channels of audio in question
         self.dsd_path = dsd_path # Path of DSD100
@@ -26,7 +27,7 @@ class Preprocess:
             'Mixture MFCC': [],
             'Target MFCC': []
         }
-    def multi_mfcc(self, audio, start, end):
+    def multi_mfcc(self, audio):
         '''
         The main objective of multi_mfcc is to take the MFCC of a multi-channel
         audio source by taking the MFCC of each individual channel. While this
@@ -55,11 +56,11 @@ class Preprocess:
 
         '''
         # Take MFCC of first channel and transpose for continuitity.
-        mfcc1 = librosa.feature.mfcc(audio[0, start:end], sr = self.sr,
+        mfcc1 = librosa.feature.mfcc(audio[0, :], sr = self.sr,
                                     n_fft = self.n_fft, n_mfcc = self.n_mfcc, 
                                     hop_length = self.hop_length)
         # Take MFCC of second channel and transpose again.
-        mfcc2 = librosa.feature.mfcc(audio[1, start:end], sr = self.sr,
+        mfcc2 = librosa.feature.mfcc(audio[1, :], sr = self.sr,
                                     n_fft = self.n_fft, n_mfcc = self.n_mfcc, 
                                     hop_length = self.hop_length)
         # Vertically Stack stack the 2 MFCCs and reshape to a 3D array.
@@ -78,29 +79,18 @@ class Preprocess:
         target: (array)
         The numpy array that contains the target in question.
         '''
-        # Number of samples per segment. A quarter of the sample rate is a quarter of a second
-        samp_per_segment = int(self.sr / 4)
-        # Expected value of length of segments. We'll ignore if it's shorter
-        Elen = math.ceil(samp_per_segment / self.hop_length)
-        # Expected value of segments in song.
-        Eseg = math.ceil(mix.shape[1] / Elen)
-        # Iterating through all segments of the song.
-        for segment in range(Eseg):
-            # Start and end of slice of song
-            start = samp_per_segment * segment
-            end = start + samp_per_segment
-            # MFCCs of Mix:
-            mix_mfcc = self.multi_mfcc(mix, start, end)
+        # Segment audio using sliding window with a quarter second frame length.
+        mix = librosa.util.frame(mix, self.frame_length, self.hop_length)
+        target = librosa.util.frame(target, self.frame_length, self.hop_length)
+        for i in range(mix.shape[2]):
+            # MFCCs of vocals
+            mix_mfcc = self.multi_mfcc(mix[:,:,i])
             # MFCCs of Vocals:
-            tgt_mfcc = self.multi_mfcc(target, start, end)
-            # If the mfccs are the desired length, we use it.
-            if (mix_mfcc.shape[1] and tgt_mfcc.shape[1]) == Elen:
-                # Append to list for storage.
-                self.data['Mixture MFCC'].append(mix_mfcc.tolist())
-                self.data['Target MFCC'].append(tgt_mfcc.tolist())
+            tgt_mfcc = self.multi_mfcc(target[:,:,i])
+            # Append to data
+            self.data['Mixture MFCC'].append(mix_mfcc.tolist())
+            self.data['Target MFCC'].append(tgt_mfcc.tolist())
         print('Song has been segmented and appended.')
-
-
     # Preprocess data.
     def preprocess(self, dev_test):
         '''
@@ -132,7 +122,7 @@ class Preprocess:
                 mix, samplerate = librosa.load(mix_file, sr = self.sr, mono = False)
                 target, samplerate = librosa.load(target_file, sr = self.sr, mono = False)
                 self.save_mfcc(mix, target)
-                print('{} has been saved'.format(song))
+                print('{} is complete'.format(song))
         # Determine whether or not we are saving the test or train data
         if dev_test == 'Test':
             json_path = os.path.join(self.data_path, (dev_test.lower() + '.json'))
@@ -148,3 +138,4 @@ if __name__ == "__main__":
     pre = Preprocess()
     for dev_test in ['Test', 'Dev']:
         pre.preprocess(dev_test)
+    
