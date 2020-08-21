@@ -2,7 +2,7 @@
  The repository of Adam Sabra's Undergraduate Thesis. In it will contain a CNN intended to separate vocals from songs.
  
 ## Where is the project at now?
-- I have developed a Preprocess class to preprocess and store the data in a useable format for the model. I am currently optimizing it to run on a GPU.
+- I have developed a Preprocess class to preprocess and store the data in a useable format for the model. I am currently compiling the file to speed up the loops needed to preprocess the data.
 - I am now studying various CNN architectures and building them for performance comparison.
 
 ### Checklist:
