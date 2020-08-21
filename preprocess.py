@@ -3,18 +3,20 @@ import librosa
 import numpy as np
 import math
 import json
-from numba import jit, cuda
+# from numba import njit
+# from numba.typed import List
+
 '''
 There are plenty of ways to structure the preprocessing the data the way the
 directory is structured. I chose to use a preprocessing class to keep things
 organized in one object.
 '''
-# @jitclass
-# Preprocessing class
+
 class Preprocess:
     # When initializing, we set up necessary constants needed for preprocessing.
     def __init__(self, target = 'vocals', sr = 44100, n_fft = 2048, n_mfcc = 13, hop_length = 512, num_chan = 2, 
-    dsd_path = 'C:\\Users\\19512\\Downloads\\DSD100\\DSD100', input_shape = None, data_path = 'C:\\Users\\19512\\OneDrive\\GitHub\\Audio-Source-Separation\\Audio-Source-Separation--Undergraduate-Thesis-\\data'):
+    dsd_path = 'C:\\Users\\19512\\Downloads\\DSD100\\DSD100', input_shape = None, 
+    data_path = 'C:\\Users\\19512\\OneDrive\\GitHub\\Audio-Source-Separation\\Audio-Source-Separation--Undergraduate-Thesis-\\data'):
         self.sr = sr # Samplerate
         self.n_fft = n_fft # Number of Fast Fourier Transforms we are performing
         self.n_mfcc = n_mfcc # Number of MFCCs we are incorperating

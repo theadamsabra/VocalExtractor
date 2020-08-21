@@ -2,9 +2,9 @@
  The repository of Adam Sabra's Undergraduate Thesis. In it will contain a CNN intended to separate vocals from songs.
  
 ## Where is the project at now?
-- As of now, I am currently learning about the mathematics behind Convolutional Neural Networks. The series can be found [here](https://www.youtube.com/playlist?list=PL3FW7Lu3i5JvHM8ljYj-zLfQRF3EO8sYv).
-- I am also developing functions to preprocess and store the data in a useable format for the model. You can view what I'm up to [here](https://github.com/theadamsabra/Audio-Source-Separation-Undergraduate-Thesis/blob/master/notebooks/Full_Procedure.ipynb).
- 
+- I have developed a Preprocess class to preprocess and store the data in a useable format for the model. I am currently optimizing it to run on a GPU.
+- I am now studying various CNN architectures and building them for performance comparison.
+
 ### Checklist:
 - [x] Dataset Retrieval (DSD100)
 - [x] EDA + Data Transformation
