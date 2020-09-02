@@ -8,8 +8,7 @@ I have preprocessed all the train and test data. I will now be studying various 
 - [x] Dataset Retrieval (DSD100)
 - [x] EDA + Data Transformation
 - [x] Preprocess all songs
-- [ ] Set up Google Cloud VM for training model
 - [ ] Build and compare models to extract vocals.
 - [ ] Engineer and productionize model
 - [ ] Formalize findings and write paper
-- [ ] Document package
+
