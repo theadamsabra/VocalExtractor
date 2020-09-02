@@ -2,7 +2,7 @@ import os
 import librosa
 import numpy as np
 import math
-import json
+import h5py
 
 '''
 There are plenty of ways to structure the preprocessing the data the way the
@@ -61,9 +61,31 @@ class Config:
         self.block_length = block_length
         self.num_chan = num_chan 
 
+def streaming(block, source, Config):
+    '''
+    Simplify librosa's streaming process for readability.
+
+    Parameters:
+    -----------
+    - block: Generator function
+    Iterable generator with all blocks of song.
+
+    - source: (str)
+    String of either 'Mixture' or 'Target'.
+
+    - Config: (class)
+    Configuration of needed information.
+    '''
+    for blocks in block:
+        mfcc_block = librosa.feature.melspectrogram(blocks, sr=Config.sr, n_fft=Config.n_fft, 
+        hop_length=Config.hop_length, center=False)
+        if mfcc_block.shape[1] == 4102:
+            Config.data[source].append(mfcc_block.tolist())
+
+
 def preprocess(dev_test, Config):
     '''
-    This function goes to the path 
+    Preprocess all data.
 
     Parameters:
     -----------
@@ -94,33 +116,25 @@ def preprocess(dev_test, Config):
             # Loading in the mixtures as a generator function and taking MFCCs
             mix_block = librosa.stream(mix_file, block_length = Config.block_length,
             frame_length = Config.frame_length, hop_length = Config.hop_length)
-            for m_blocks in mix_block:
-                mfcc_block = librosa.feature.melspectrogram(m_blocks, sr=Config.sr, n_fft=Config.n_fft, 
-                hop_length=Config.hop_length, center=False)
-                if mfcc_block.shape[1] == 4102:
-                    Config.data['Mixture'].append(mfcc_block.tolist())
+            streaming(mix_block, 'Mixture', Config)
+            # Loading in the targets as a generator function and taking MFCCs
             target_block = librosa.stream(target_file, block_length = Config.block_length,
             frame_length = Config.frame_length, hop_length = Config.hop_length)
-            for t_blocks in target_block:
-                tmfcc_block = librosa.feature.melspectrogram(t_blocks, sr=Config.sr, n_fft=Config.n_fft, 
-                hop_length=Config.hop_length, center=False)
-                if tmfcc_block.shape[1] == 4102:
-                    Config.data['Target'].append(mfcc_block.tolist())
+            streaming(target_block, 'Target', Config)
             print('{} is complete. \n Length of data lists are currently {} for mixtures and {} for target.'.format(song, 
             len(Config.data['Mixture']), len(Config.data['Target'])))
-    # Determine whether or not we are saving the test or train data
-    if dev_test == 'Test':
-        json_path = os.path.join(Config.data_path, (dev_test.lower() + '.json'))
-    else:
-        json_path = os.path.join(Config.data_path, 'train.json')
-    # Save data as json file
-    with open(json_path, 'w') as json_file:
-        # Dump data to JSON
-        json.dump(Config.data, json_file, indent = 4)
+    # Convert lists to numpy arrays
+    # mix_array is automatically saved as dtype = 'float64' whereas target_array is not
+    mix_array = np.array(Config.data['Mixture'])
+    target_array = np.array(Config.data['Target'], dtype='float64')
+    # Save arrays as specific keys in hdf5 file
+    with h5py.File(dev_test, 'w') as f:
+        f.create_dataset('mixture', data = mix_array)
+        f.create_dataset('target', data = target_array)
         # Empty Config for next round of processing
         Config.data['Mixture'] = []
         Config.data['Target'] = []
-    return 'Writing in the json for {} has been complete.'.format(dev_test)
+        print('Writing in the file for {} has been complete.'.format(dev_test))
 
 # Main function
 if __name__ == "__main__":
