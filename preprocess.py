@@ -7,7 +7,7 @@ import h5py
 '''
 There are plenty of ways to structure the preprocessing the data the way the
 directory is structured. I chose to use a preprocessing class to keep things
-organized in one object.
+organize the necessary constants.
 '''
 
 class Config:
