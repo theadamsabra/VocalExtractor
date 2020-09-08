@@ -22,7 +22,7 @@ class Config:
         Target source of extraction. Can be either 'vocals', 'bass', 'drums', or 'other'.
 
         -dsd_path: (str)
-        Path of the dataset.
+        Path of the DSD 100 dataset.
 
         -data_path: (str)
         Path of where processed data is going to be stored.
@@ -34,13 +34,16 @@ class Config:
         Number of Fast Fourier Transformations to perform on audio. Default set to 2048.
 
         -n_mfcc: (int, optional)
-        Number of MFCCs to find. Default set to 13.
+        Number of MFCCs to find. Default set to 128.
 
         -hop_length: (int, optional)
-        Number of points to slide over to slice audio. Best to be around a quarter of self.n_fft. Default set to 512.
+        Number of points to slide over to slice audio. Default set to 256.
 
         -frame_length: (int, optional)
-        Length of frame window when streaming in our audio. Default set to 2048.
+        Length of frame window when streaming in our audio. Default set to 512.
+
+        -block_length: (int, optional)
+        Length of block for librosa.stream. Default set to 2048.
 
         -num_chan: (int,optional)
         Number of channels in the audio. Default set to 2.
@@ -119,8 +122,7 @@ def preprocess(dev_test, Config):
             target_block = librosa.stream(target_file, block_length = Config.block_length,
             frame_length = Config.frame_length, hop_length = Config.hop_length)
             streaming(target_block, 'Target', Config)
-            print('{} is complete. \n Length of data lists are currently {} for mixtures and {} for target.'.format(song, 
-            len(Config.data['Mixture']), len(Config.data['Target'])))
+            print(f'{song} is complete')
     # Convert lists to numpy arrays
     # mix_array is automatically saved as dtype = 'float64' whereas target_array is not
     mix_array = np.array(Config.data['Mixture'])
