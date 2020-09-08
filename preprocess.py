@@ -11,9 +11,8 @@ organize the necessary constants.
 '''
 
 class Config:
-    # When initializing, we set up necessary constants needed for preprocessing.
-    def __init__(self, target,  dsd_path, data_path, sr = 44100, n_fft = 2048, n_mfcc = 13, 
-    hop_length = 512, frame_length = 4096, block_length = 4098, num_chan = 2):
+    def __init__(self, target,  dsd_path, data_path, sr = 44100, n_fft = 2048, n_mfcc = 128, 
+    hop_length = 256, frame_length = 512, block_length = 2048, num_chan = 2):
         '''
         Initalizing necessary information to preprocess DSD100 dataset.
 
@@ -77,11 +76,10 @@ def streaming(block, source, Config):
     Configuration of needed information.
     '''
     for blocks in block:
-        mfcc_block = librosa.feature.melspectrogram(blocks, sr=Config.sr, n_fft=Config.n_fft, 
-        hop_length=Config.hop_length, center=False)
-        if mfcc_block.shape[1] == 4102:
+        mfcc_block = librosa.feature.mfcc(blocks, sr=Config.sr, n_fft=Config.n_fft, 
+        n_mfcc = Config.n_mfcc, hop_length=Config.hop_length, center = False)
+        if mfcc_block.shape[1] == 2042:
             Config.data[source].append(mfcc_block.tolist())
-
 
 def preprocess(dev_test, Config):
     '''
@@ -109,7 +107,7 @@ def preprocess(dev_test, Config):
         # Items[0] is the directory path
         if items[0] is not mix_path:
             # Get song name
-            song = items[0].split('\\')[-1]
+            song = items[0].split('/')[-1]
             # Paths for files
             mix_file = os.path.join(mix_path, song, mixtures[:-1].lower() + '.wav')
             target_file = os.path.join(target_path, song, Config.target + '.wav')
@@ -127,8 +125,9 @@ def preprocess(dev_test, Config):
     # mix_array is automatically saved as dtype = 'float64' whereas target_array is not
     mix_array = np.array(Config.data['Mixture'])
     target_array = np.array(Config.data['Target'], dtype='float64')
+    file_path = os.path.join(Config.data_path, dev_test + '.hdf5')
     # Save arrays as specific keys in hdf5 file
-    with h5py.File(dev_test, 'w') as f:
+    with h5py.File(file_path, 'w') as f:
         f.create_dataset('mixture', data = mix_array)
         f.create_dataset('target', data = target_array)
         # Empty Config for next round of processing
@@ -139,8 +138,8 @@ def preprocess(dev_test, Config):
 # Main function
 if __name__ == "__main__":
     target = 'vocals'
-    dsd_path = 'C:\\Users\\19512\\Downloads\\DSD100\\DSD100'
-    data_path = 'C:\\Users\\19512\\OneDrive\\GitHub\\Audio-Source-Separation\\Audio-Source-Separation--Undergraduate-Thesis-\\data'
+    dsd_path = '/home/asabra/GitHub/Audio-Source-Separation-Undergraduate-Thesis/data/DSD100'
+    data_path = '/home/asabra/GitHub/Audio-Source-Separation-Undergraduate-Thesis/data'
     c = Config(target, dsd_path, data_path)
     for dev_test in ['Dev', 'Test']:
         preprocess(dev_test, c)
