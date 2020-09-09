@@ -51,17 +51,17 @@ class Config:
         self.data = { # Dictionary initalized to store MFCCs of Mixture and Target.
             'Mixture': [],
             'Target': []
-        }        
-        self.target = target 
-        self.dsd_path = dsd_path 
-        self.data_path = data_path         
+        }
+        self.target = target
+        self.dsd_path = dsd_path
+        self.data_path = data_path
         self.sr = sr
-        self.n_fft = n_fft 
-        self.n_mfcc = n_mfcc 
+        self.n_fft = n_fft
+        self.n_mfcc = n_mfcc
         self.hop_length = hop_length
         self.frame_length = frame_length
         self.block_length = block_length
-        self.num_chan = num_chan 
+        self.num_chan = num_chan
 
 def streaming(block, source, Config):
     '''
@@ -79,7 +79,7 @@ def streaming(block, source, Config):
     Configuration of needed information.
     '''
     for blocks in block:
-        mfcc_block = librosa.feature.mfcc(blocks, sr=Config.sr, n_fft=Config.n_fft, 
+        mfcc_block = librosa.feature.mfcc(blocks, sr=Config.sr, n_fft=Config.n_fft,
         n_mfcc = Config.n_mfcc, hop_length=Config.hop_length, center = False)
         if mfcc_block.shape[1] == 2042:
             Config.data[source].append(mfcc_block.tolist())
