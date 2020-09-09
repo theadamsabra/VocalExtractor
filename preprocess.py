@@ -11,7 +11,7 @@ organize the necessary constants.
 '''
 
 class Config:
-    def __init__(self, target,  dsd_path, data_path, sr = 44100, n_fft = 2048, n_mfcc = 128, 
+    def __init__(self, target,  dsd_path, data_path, sr = 44100, n_fft = 2048, n_mfcc = 128,
     hop_length = 256, frame_length = 512, block_length = 2048, num_chan = 2):
         '''
         Initalizing necessary information to preprocess DSD100 dataset.
@@ -99,7 +99,7 @@ def preprocess(dev_test, Config):
 
     Returns:
     --------
-    Processed data in data/test.json or data/train.json
+    Processed data in data/Dev.hdf5 or data/Train.hdf5
     '''
     mixtures = 'Mixtures'
     source = 'Sources'
@@ -140,8 +140,10 @@ def preprocess(dev_test, Config):
 # Main function
 if __name__ == "__main__":
     target = 'vocals'
-    dsd_path = '/home/asabra/GitHub/Audio-Source-Separation-Undergraduate-Thesis/data/DSD100'
-    data_path = '/home/asabra/GitHub/Audio-Source-Separation-Undergraduate-Thesis/data'
+    # Have the DSD100 dataset in your current directory called DSD100
+    dsd_path = os.path.abspath('DSD100')
+    # Have a folder called data to store processed data
+    data_path = os.path.abspath('data')
     c = Config(target, dsd_path, data_path)
     for dev_test in ['Dev', 'Test']:
         preprocess(dev_test, c)
