@@ -22,11 +22,15 @@ def u_net_loss():
 
 class VocalUNet:
     def __init__(self, batch_size, num_classes, epochs):
+        self.model = None
         self.batch_size = batch_size
         self.num_classes = num_classes
         self.epochs = epochs
     # Function to train the model
     def train_model(self, x_train, y_train):
+        # if x_train.shape == y_train.shape:
+        #     self.rows = x_train.shape[1]      # Maybe.
+        #     self.cols = x_train.shape[2]
         pass
     # Function to test the model
     def test_model(self, x_test, y_test):
