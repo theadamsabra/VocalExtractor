@@ -11,15 +11,17 @@ organize the necessary constants.
 '''
 
 class Config:
-    def __init__(self, target,  dsd_path, data_path, sr = 44100, n_fft = 2048, n_mfcc = 128,
-    hop_length = 256, frame_length = 512, block_length = 2048, num_chan = 2):
+    def __init__(self, target,  dsd_path, data_path, sr = 44100, n_fft = 2048,
+    n_mfcc = 128, hop_length = 256, frame_length = 512, block_length = 2048,
+    num_chan = 2):
         '''
         Initalizing necessary information to preprocess DSD100 dataset.
 
         Parameters:
         -----------
         - target: (str)
-        Target source of extraction. Can be either 'vocals', 'bass', 'drums', or 'other'.
+        Target source of extraction. Can be either 'vocals', 'bass', 'drums',
+        or 'other'.
 
         -dsd_path: (str)
         Path of the DSD 100 dataset.
@@ -31,7 +33,8 @@ class Config:
         Samplerate of audio in question. Default set to 44100.
 
         - n_fft: (int, optional)
-        Number of Fast Fourier Transformations to perform on audio. Default set to 2048.
+        Number of Fast Fourier Transformations to perform on audio. Default set
+        to 2048.
 
         -n_mfcc: (int, optional)
         Number of MFCCs to find. Default set to 128.
@@ -48,7 +51,8 @@ class Config:
         -num_chan: (int,optional)
         Number of channels in the audio. Default set to 2.
         '''
-        self.data = { # Dictionary initalized to store MFCCs of Mixture and Target.
+        # Dictionary initalized to store MFCCs of Mixture and Target.
+        self.data = {
             'Mixture': [],
             'Target': []
         }
@@ -79,8 +83,9 @@ def streaming(block, source, Config):
     Configuration of needed information.
     '''
     for blocks in block:
-        mfcc_block = librosa.feature.mfcc(blocks, sr=Config.sr, n_fft=Config.n_fft,
-        n_mfcc = Config.n_mfcc, hop_length=Config.hop_length, center = False)
+        mfcc_block = librosa.feature.mfcc(blocks, sr=Config.sr,
+        n_fft=Config.n_fft, n_mfcc = Config.n_mfcc,
+        hop_length=Config.hop_length, center = False)
         if mfcc_block.shape[1] == 2042:
             Config.data[source].append(mfcc_block.tolist())
 
@@ -112,19 +117,23 @@ def preprocess(dev_test, Config):
             # Get song name
             song = items[0].split('/')[-1]
             # Paths for files
-            mix_file = os.path.join(mix_path, song, mixtures[:-1].lower() + '.wav')
-            target_file = os.path.join(target_path, song, Config.target + '.wav')
+            mix_file = os.path.join(mix_path, song,
+            mixtures[:-1].lower() + '.wav')
+            target_file = os.path.join(target_path, song,
+            Config.target + '.wav')
             # Loading in the mixtures as a generator function and taking MFCCs
-            mix_block = librosa.stream(mix_file, block_length = Config.block_length,
+            mix_block = librosa.stream(mix_file,
+            block_length = Config.block_length,
             frame_length = Config.frame_length, hop_length = Config.hop_length)
             streaming(mix_block, 'Mixture', Config)
             # Loading in the targets as a generator function and taking MFCCs
-            target_block = librosa.stream(target_file, block_length = Config.block_length,
+            target_block = librosa.stream(target_file,
+            block_length = Config.block_length,
             frame_length = Config.frame_length, hop_length = Config.hop_length)
             streaming(target_block, 'Target', Config)
             print(f'{song} is complete')
     # Convert lists to numpy arrays
-    # mix_array is automatically saved as dtype = 'float64' whereas target_array is not
+    # mix_array is automatically saved as dtype = 'float64'
     mix_array = np.array(Config.data['Mixture'])
     target_array = np.array(Config.data['Target'], dtype='float64')
     file_path = os.path.join(Config.data_path, dev_test + '.hdf5')
