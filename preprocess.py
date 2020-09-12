@@ -145,8 +145,7 @@ def preprocess(dev_test, Config):
         Config.data['Target'] = []
         print('Writing in the file for {} has been complete.'.format(dev_test))
 
-# Main function
-if __name__ == "__main__":
+def main():
     target = 'vocals'
     # Have the DSD100 dataset in your current directory called DSD100
     dsd_path = os.path.abspath('DSD100')
@@ -155,3 +154,6 @@ if __name__ == "__main__":
     c = Config(target, dsd_path, data_path)
     for dev_test in ['Dev', 'Test']:
         preprocess(dev_test, c)
+# Main function
+if __name__ == "__main__":
+    main()

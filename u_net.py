@@ -18,27 +18,54 @@ class VocalUNet(tf.keras.Model):
         filters = 16, kernel_size = kernel_size, strides = strides,
         activation = leaky_relu))
         # Second Convolution
-        self.conv2 = BatchNormalization(Conv2D(inputs = inputs,
+        self.conv2 = BatchNormalization(Conv2D(inputs = self.conv1,
         filters = 32, kernel_size = kernel_size, strides = strides,
         activation = leaky_relu))
         # Third Convolution
-        self.conv3 = BatchNormalization(Conv2D(inputs = inputs,
+        self.conv3 = BatchNormalization(Conv2D(inputs = self.conv2,
         filters = 64, kernel_size = kernel_size, strides = strides,
         activation = leaky_relu))
         # Fourth Convolution
-        self.conv4 = BatchNormalization(Conv2D(inputs = inputs,
+        self.conv4 = BatchNormalization(Conv2D(inputs = self.conv3,
         filters = 128, kernel_size = kernel_size, strides = strides,
         activation = leaky_relu))
         # Fifth Convolotion
-        self.conv5 = BatchNormalization(Conv2D(inputs = inputs,
+        self.conv5 = BatchNormalization(Conv2D(inputs = self.conv4,
         filters = 256, kernel_size = kernel_size, strides = strides,
         activation = leaky_relu))
         # Sixth Convolution
-        self.conv6 = BatchNormalization(Conv2D(inputs = inputs,
+        self.conv6 = BatchNormalization(Conv2D(inputs = self.conv5,
         filters = 512, kernel_size = kernel_size, strides = strides,
         activation = leaky_relu))
         # Deconvolve/Convolution Transpose layers.
-        pass
+        '''
+        - Link inputs together
+        - add dropouts
+        '''
+        # Convolution Transpose 1:
+        self.convt1 = BatchNormalization(Conv2DTranspose(inputs = self.conv6,
+        filters = 256, kernel_size = kernel_size, strides = strides,
+        activation = relu))
+        # Convolution Transpose 2:
+        self.convt2 = BatchNormalization(Conv2DTranspose(inputs = self.conv6,
+        filters = 128, kernel_size = kernel_size, strides = strides,
+        activation = relu))
+        # Convolution Transpose 3:
+        self.convt3 = BatchNormalization(Conv2DTranspose(inputs = self.conv6,
+        filters = 64, kernel_size = kernel_size, strides = strides,
+        activation = relu))
+        # Convolution Transpose 4:
+        self.convt4 = BatchNormalization(Conv2DTranspose(inputs = self.conv6,
+        filters = 32, kernel_size = kernel_size, strides = strides,
+        activation = relu))
+        # Convolution Transpose 5:
+        self.convt5 = BatchNormalization(Conv2DTranspose(inputs = self.conv6,
+        filters = 16, kernel_size = kernel_size, strides = strides,
+        activation = relu))
+        # Convolution Transpose 6:
+        self.convt6 = BatchNormalization(Conv2DTranspose(inputs = self.conv6,
+        filters = 1, kernel_size = kernel_size, strides = strides,
+        activation = relu))
     # Function to train the model
     def train_model(self, x_train, y_train):
         # if x_train.shape == y_train.shape:
