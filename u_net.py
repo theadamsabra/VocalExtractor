@@ -18,43 +18,36 @@ class VocalUNet(tf.keras.Model):
 
         Parameters:
         -----------
-        - inputs: (array [might be tf.Input we will see.])
-        Inputs the model takes in. Should be preprocessed MFCC data from preprocessing.py
-        INPUTS MIGHT BE REMOVED.
         - kernel_size: (tuple/list)
         Size of kernel for model. Default set to (5,5).
 
         - strides: (tuple/list)
         Size of stride of kernel. Default set to (2,2).
 
-        NEED TO ADD TO INIT AND DETERMINE HOW TO USE THIS PROPERLY.
-        - training: (bool)
-        True or false for differentiating between training/testing.
+        NOTES:
+        - need to add BatchNormalization/ Dropout layers
+        - Since they are similar, I could initialize them once.
+        - need to know what to do with training paramter for dropout.
+        (might not need to worry about this.)
         '''
         # First Convolution
-        self.conv1 = BatchNormalization(Conv2D(inputs = inputs,
-        filters = 16, kernel_size = kernel_size, strides = strides,
-        activation = leaky_relu))
+        self.conv1 = Conv2D(filters = 16, kernel_size = kernel_size,
+        strides = strides, activation = leaky_relu)
         # Second Convolution
-        self.conv2 = BatchNormalization(Conv2D(inputs = self.conv1,
-        filters = 32, kernel_size = kernel_size, strides = strides,
-        activation = leaky_relu))
+        self.conv2 = Conv2D(filters = 32, kernel_size = kernel_size,
+        strides = strides, activation = leaky_relu)
         # Third Convolution
-        self.conv3 = BatchNormalization(Conv2D(inputs = self.conv2,
-        filters = 64, kernel_size = kernel_size, strides = strides,
-        activation = leaky_relu))
+        self.conv3 = Conv2D(filters = 64, kernel_size = kernel_size,
+        strides = strides, activation = leaky_relu)
         # Fourth Convolution
-        self.conv4 = BatchNormalization(Conv2D(inputs = self.conv3,
-        filters = 128, kernel_size = kernel_size, strides = strides,
-        activation = leaky_relu))
+        self.conv4 = Conv2D(filters = 128, kernel_size = kernel_size,
+        strides = strides, activation = leaky_relu)
         # Fifth Convolotion
-        self.conv5 = BatchNormalization(Conv2D(inputs = self.conv4,
-        filters = 256, kernel_size = kernel_size, strides = strides,
-        activation = leaky_relu))
+        self.conv5 = Conv2D(filters = 256, kernel_size = kernel_size,
+        strides = strides, activation = leaky_relu)
         # Sixth Convolution
-        self.conv6 = BatchNormalization(Conv2D(inputs = self.conv5,
-        filters = 512, kernel_size = kernel_size, strides = strides,
-        activation = leaky_relu))
+        self.conv6 = Conv2D(filters = 512, kernel_size = kernel_size,
+        strides = strides, activation = leaky_relu)
         '''
         Deconvolve/Convolution Transpose layers:
         As we deconvolve the layers, we dropout half for the first three
@@ -62,50 +55,30 @@ class VocalUNet(tf.keras.Model):
         deconvoloution with sigmoid activation function.
         '''
         # Convolution Transpose 1:
-        self.convt1 = BatchNormalization(Conv2DTranspose(inputs = self.conv6,
-        filters = 256, kernel_size = kernel_size, strides = strides,
-        activation = relu))
-        # Dropout 1:
-        self.dropout1 = Dropout(rate = 0.5, inputs = self.convt1,
-        training = training)
-        # Concatnate 1:
-        self.con1 = concatenate([self.dropout1, self.conv5], 3)
+        self.convt1 = Conv2DTranspose(filters = 256, kernel_size = kernel_size,
+        strides = strides, activation = relu)
         # Convolution Transpose 2:
-        self.convt2 = BatchNormalization(Conv2DTranspose(inputs = self.con1,
-        filters = 128, kernel_size = kernel_size, strides = strides,
-        activation = relu))
-        # Dropout 2:
-        self.dropout2 = Dropout(rate = 0.5, inputs = self.convt1,
-        training = training)
-        # Concatenate 2:
-        self.con2 = concatenate([self.dropout2, self.conv4],3)
+        self.convt2 = Conv2DTranspose(filters = 128,kernel_size = kernel_size,
+        strides = strides, activation = relu)
         # Convolution Transpose 3:
-        self.convt3 = BatchNormalization(Conv2DTranspose(inputs = self.con2,
-        filters = 64, kernel_size = kernel_size, strides = strides,
-        activation = relu))
-        # Dropout 3:
-        self.dropout3 = Dropout(rate = 0.5, inputs = self.convt1,
-        training = training)
-        # Concatenate 3:
-        self.con3 = concatenate([self.dropout3, self.conv3],3)
+        self.convt3 = Conv2DTranspose(filters = 64,kernel_size = kernel_size,
+        strides = strides, activation = relu)
         # Convolution Transpose 4:
-        self.convt4 = BatchNormalization(Conv2DTranspose(inputs = self.con3,
-        filters = 32, kernel_size = kernel_size, strides = strides,
-        activation = relu))
-        # Concatenate 4:
-        self.con4 = concatenate([self.convt4, self.conv2],3)
+        self.convt4 = Conv2DTranspose(filters = 32,kernel_size = kernel_size,
+        strides = strides, activation = relu)
         # Convolution Transpose 5:
-        self.convt5 = BatchNormalization(Conv2DTranspose(inputs = self.con4,
-        filters = 16, kernel_size = kernel_size, strides = strides,
-        activation = relu))
-        # Concatenate 5:
-        self.con5 = concatenate([self.convt5, self.conv1],3)
+        self.convt5 = Conv2DTranspose(filters = 16,kernel_size = kernel_size,
+        strides = strides, activation = relu)
         # Convolution Transpose 6:
-        self.convt6 = BatchNormalization(Conv2DTranspose(inputs = self.conv6,
-        filters = 1, kernel_size = kernel_size, strides = strides,
-        activation = sigmoid))
+        self.convt6 = Conv2DTranspose(filters = 1, kernel_size = kernel_size,
+        strides = strides, activation = sigmoid)
     # Implementing model's forward pass:
-    def call(self, inputs)
+    def call(self, inputs):
+        pass
+        # p represents pass. p1 therefore is pass 1, p2 is pass 2, and so on.
+        # p1 = self.conv1(inputs)
+        # p2 = self.bn1(p1)
+        # p3 =
 
 if __name__ == '__main__':
     pass
