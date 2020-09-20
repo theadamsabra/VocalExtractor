@@ -144,5 +144,8 @@ cython_debug/
 # Data folder
 data/
 
+# Notebooks
+notebooks/
+
 # DSD100
 DSD100/
