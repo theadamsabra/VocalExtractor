@@ -11,7 +11,7 @@ organize the necessary constants.
 
 class Config:
     def __init__(self, target,  dsd_path, data_path, sr = 44100, n_fft = 2048,
-    n_mfcc = 128, hop_length = 256, frame_length = 512, block_length = 2048,
+    n_mfcc = 128, hop_length = 256, frame_length = 512, block_length = 518,
     num_chan = 2):
         '''
         Initalizing necessary information to preprocess DSD100 dataset.
@@ -85,7 +85,7 @@ def streaming(block, source, Config):
         mfcc_block = librosa.feature.mfcc(blocks, sr=Config.sr,
         n_fft=Config.n_fft, n_mfcc = Config.n_mfcc,
         hop_length=Config.hop_length, center = False)
-        if mfcc_block.shape[1] == 2042:
+        if mfcc_block.shape == (128,512):
             Config.data[source].append(mfcc_block.tolist())
 
 def preprocess(dev_test, Config):
