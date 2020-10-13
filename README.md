@@ -8,6 +8,6 @@ I have preprocessed all the train and test data. I am currently building [a U-Ne
 - [x] EDA + Data Transformation
 - [x] Preprocess all songs
 - [x] Build U-Net for Vocal Extraction
-- [ ] Train on Cloudpatties
+- [ ] Train on Cloud.
 - [ ] Find new model for comparison
 - [ ] Formalize findings and write paper
