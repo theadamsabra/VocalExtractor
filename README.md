@@ -7,7 +7,7 @@ I have preprocessed all the train and test data. I am currently building [a U-Ne
 - [x] Dataset Retrieval (DSD100)
 - [x] EDA + Data Transformation
 - [x] Preprocess all songs
-- [ ] Build and compare models to extract vocals
-- [ ] Engineer and productionize model
-- [ ] Allow command line interface
+- [x] Build U-Net for Vocal Extraction
+- [ ] Train on Cloudpatties
+- [ ] Find new model for comparison
 - [ ] Formalize findings and write paper
