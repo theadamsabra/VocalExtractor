@@ -1,5 +1,5 @@
 # Vocal Extractor
-## Implementation of U-Net Architecture for [Vocal Extraction](https://pdfs.semanticscholar.org/83ea/11b45cba0fc7ee5d60f608edae9c1443861d.pdf)
+## Implementation of [U-Net Architecture for Vocal Extraction](https://pdfs.semanticscholar.org/83ea/11b45cba0fc7ee5d60f608edae9c1443861d.pdf)
 
 # About:
 
