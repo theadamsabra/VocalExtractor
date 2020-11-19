@@ -11,7 +11,7 @@ I have not yet built an interface for human-interpretable results. When complete
 The dataset used to train the model is DSD100 [2]. In it, contains 100 songs (50/50 train/test) with the mixed songs as input and the four stems of the song: vocals, bass, drums, and other. For training and testing, only the mixed songs and its respective vocals were needed.
 
 ## Exploratory Data Analysis:
-To get a taste of what the dataset entails, reading through the EDA notebook should get you caught up rather quickly.
+To get a taste of what the dataset entails, reading through the [EDA notebook](https://github.com/theadamsabra/VocalExtractor/blob/master/EDA.ipynb) should get you caught up rather quickly.
 
 # Utilizing Model:
 
