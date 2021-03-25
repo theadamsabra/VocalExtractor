@@ -5,11 +5,11 @@ import h5py
 
 '''
 Create a preprocessing class that enables audio to be sliced into segments of
-any number of seconds.
+any number of seconds. Default is set to 1 second at a samplerate/frequency of 8192 Hz.
 '''
 
 class Preprocess:
-    def __init__(self, target,  dsd_path, data_path, segment_length = 2, sr = 8192):
+    def __init__(self, target,  dsd_path, data_path, segment_length = 1, sr = 8192):
         '''
         Initalizing necessary information to preprocess DSD100 dataset.
 
@@ -26,7 +26,7 @@ class Preprocess:
         Path of where processed data is going to be stored.
 
         -segment_length: (int)
-        Length of segemented audio in seconds. Default set to 2.
+        Length of segemented audio in seconds. Default set to 1 second.
 
         - sr: (int, optional)
         Samplerate of audio in question. Default set to 8192 to downsample.
@@ -41,7 +41,7 @@ class Preprocess:
         self.data_path = data_path
         self.segment_length = segment_length
         self.sr = sr
-
+    
     def preprocess(self, dev_test):
         '''
         Preprocess all data.
@@ -88,28 +88,16 @@ class Preprocess:
                     # Add sliced audio to list
                     self.data['Mixture'].append(mix_file[start:end])
                     self.data['Target'].append(target_file[start:end])
-#     # Convert lists to numpy arrays
-#     # mix_array is automatically saved as dtype = 'float64'
-#     mix_array = np.array(Config.data['Mixture'])
-#     target_array = np.array(Config.data['Target'], dtype='float64')
-#     file_path = os.path.join(Config.data_path, dev_test + '.hdf5')
-#     # Save arrays as specific keys in hdf5 file
-#     with h5py.File(file_path, 'w') as f:
-#         f.create_dataset('mixture', data = mix_array)
-#         f.create_dataset('target', data = target_array)
-#         # Empty Config for next round of processing
-#         Config.data['Mixture'] = []
-#         Config.data['Target'] = []
-#         print('Writing in the file for {} has been complete.'.format(dev_test))
-#
-
-################################################################################
-# Set vocals
-target = 'vocals'
-# Have the DSD100 dataset in your current directory called DSD100
-dsd_path = os.path.abspath('DSD100')
-# Have a folder called data to store processed data
-data_path = os.path.abspath('data')
-p = Preprocess(target, dsd_path, data_path, 5)
-for dev_test in ['Dev', 'Test']:
-    p.preprocess(dev_test)
+        # Convert lists to numpy arrays
+        # mix_array is automatically saved as dtype = 'float64'
+        mix_array = np.array(self.data['Mixture'], dtype = 'float64')
+        target_array = np.array(self.data['Target'], dtype='float64')
+        file_path = os.path.join(self.data_path, dev_test + '.hdf5')
+        # Save arrays as specific keys in hdf5 file
+        with h5py.File(file_path, 'w') as f:
+            f.create_dataset('mixture', data = mix_array)
+            f.create_dataset('target', data = target_array)
+            # Empty self for next round of processing
+            self.data['Mixture'] = []
+            self.data['Target'] = []
+            print('Writing in the file for {} has been complete.'.format(dev_test))
