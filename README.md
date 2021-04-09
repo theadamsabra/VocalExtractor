@@ -4,7 +4,7 @@
 # About:
 The paper by Jansson et al. [1] implements a U-Net Convolutional Neural Network to attempt to extract the singing voice. This repository aims to rebuild the code from scratch to better understand the tools necessary to approach a task that is at the intersection of Deep Learning and Music.
 
-I am currently building out a Variational Autoencoder to compare results. Research papers shows it will have more favorable results.
+I am currently building out a Variational Autoencoder to compare results. Research papers show it will have more favorable results.
 
 # Note:
 I have not yet built an interface for human-interpretable results. When completed, a simple web app will be built using the architecture displaying the results for people to listen to.
