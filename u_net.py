@@ -1,8 +1,8 @@
 # Clean this up later
 import tensorflow as tf
+import numpy as np
 from tensorflow.nn import leaky_relu, relu
-from tensorflow.keras.layers import BatchNormalization, Dropout
-from tensorflow.keras.layers import Conv2D, Conv2DTranspose
+from tensorflow.keras.layers import BatchNormalization, Dropout, Conv2D, Conv2DTranspose
 
 '''
 The loss function used to train the model is the L 1
