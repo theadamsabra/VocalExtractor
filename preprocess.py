@@ -5,7 +5,7 @@ import h5py
 
 '''
 Create a preprocessing class that enables audio to be sliced into segments of
-any number of seconds. Default is set to 1 second at a samplerate/frequency of 8192 Hz.
+any number of seconds.
 '''
 
 class Preprocess:
@@ -143,14 +143,15 @@ class Preprocess:
 
 
 ################################################################################
-# Set target
+## Set target
 # target = 'vocals'
-# Set Spectrogram type
+## Set Spectrogram type
 # spec_type = 'spec'
-# Have the DSD100 dataset in your current directory called DSD100
+## Have the DSD100 dataset in your current directory called DSD100
 # dsd_path = 
-# Have a folder called data to store processed data
+## Have a folder called data to store processed data
 # data_path =
 # p = Preprocess(target, dsd_path, data_path)
 # for dev_test in ['Dev', 'Test']:
 #   p.preprocess(dev_test, spec_type)
+################################################################################

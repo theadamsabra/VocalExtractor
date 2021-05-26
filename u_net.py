@@ -11,7 +11,7 @@ masked input spectrogram
 '''
 class VocalUNetLoss(tf.keras.losses.Loss):
     def call(self, y_true, y_pred):
-        return np.linalg.norm(y_pred - y_true, ord=1)
+        return tf.norm(y_pred - y_true, ord=1)
 class VocalUNet(tf.keras.Model):
     def __init__(self, kernel_size = (5,5), strides = (2,2)):
         # Initialize Model properties
