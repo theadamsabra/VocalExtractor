@@ -1,9 +1,8 @@
 # Clean this up later
 import tensorflow as tf
-import numpy as np
 from tensorflow.nn import leaky_relu, relu
-from tensorflow.keras.layers import BatchNormalization, Dropout, Conv2D, Conv2DTranspose
-
+from tensorflow.keras.layers import Input, BatchNormalization, Dropout, Conv2D, Conv2DTranspose, concatenate
+from tensorflow.keras.activations import sigmoid
 '''
 The loss function used to train the model is the L 1
 norm of the difference of the target spectrogram and the
@@ -29,32 +28,32 @@ class VocalUNet(tf.keras.Model):
         '''
         # First Convolution
         self.conv1 = Conv2D(filters = 16, kernel_size = kernel_size,
-        strides = strides, activation = leaky_relu)
+        strides = strides, activation = leaky_relu, padding = 'same')
         # First Batch Norm
         self.bn1 = BatchNormalization()
         # Second Convolution
         self.conv2 = Conv2D(filters = 32, kernel_size = kernel_size,
-        strides = strides, activation = leaky_relu)
+        strides = strides, activation = leaky_relu, padding = 'same')
         # Second Batch Norm
         self.bn2 = BatchNormalization()
         # Third Convolution
         self.conv3 = Conv2D(filters = 64, kernel_size = kernel_size,
-        strides = strides, activation = leaky_relu)
+        strides = strides, activation = leaky_relu, padding = 'same')
         # Third Batch Norm
         self.bn3 = BatchNormalization()
         # Fourth Convolution
         self.conv4 = Conv2D(filters = 128, kernel_size = kernel_size,
-        strides = strides, activation = leaky_relu)
+        strides = strides, activation = leaky_relu, padding = 'same')
         # Fourth Batch Norm
         self.bn4 = BatchNormalization()
         # Fifth Convolotion
         self.conv5 = Conv2D(filters = 256, kernel_size = kernel_size,
-        strides = strides, activation = leaky_relu)
+        strides = strides, activation = leaky_relu, padding = 'same')
         # Fifth Batch Norm
         self.bn5 = BatchNormalization()
         # Sixth Convolution
         self.conv6 = Conv2D(filters = 512, kernel_size = kernel_size,
-        strides = strides, activation = leaky_relu)
+        strides = strides, activation = leaky_relu, padding = 'same')
         # Sixth Batch Norm
         self.bn6 = BatchNormalization()
         '''
@@ -65,38 +64,38 @@ class VocalUNet(tf.keras.Model):
         '''
         # Convolution Transpose 1:
         self.convt1 = Conv2DTranspose(filters = 256, kernel_size = kernel_size,
-        strides = strides, activation = relu)
+        strides = strides, activation = relu, padding = 'same')
         # Seventh Batch Norm:
         self.bn7 = BatchNormalization()
         # First Dropout:
         self.dropout1 = Dropout(0.5)
         # Convolution Transpose 2:
         self.convt2 = Conv2DTranspose(filters = 128,kernel_size = kernel_size,
-        strides = strides, activation = relu)
+        strides = strides, activation = relu, padding = 'same')
         # Eight Batch Norm:
         self.bn8 = BatchNormalization()
         # Second Dropout:
         self.dropout2 = Dropout(0.5)
         # Convolution Transpose 3:
         self.convt3 = Conv2DTranspose(filters = 64,kernel_size = kernel_size,
-        strides = strides, activation = relu)
+        strides = strides, activation = relu, padding = 'same')
         # Ninth Batch Norm:
         self.bn9 = BatchNormalization()
         # Third Dropout:
         self.dropout3 = Dropout(0.5)
         # Convolution Transpose 4:
         self.convt4 = Conv2DTranspose(filters = 32,kernel_size = kernel_size,
-        strides = strides, activation = relu)
+        strides = strides, activation = relu, padding = 'same')
         # Tenth Batch Norm
         self.bn10 = BatchNormalization()
         # Convolution Transpose 5:
         self.convt5 = Conv2DTranspose(filters = 16,kernel_size = kernel_size,
-        strides = strides, activation = relu)
+        strides = strides, activation = relu, padding = 'same')
         # Eleventh Batch Norm
         self.bn11 = BatchNormalization()
         # Convolution Transpose 6:
         self.convt6 = Conv2DTranspose(filters = 1, kernel_size = kernel_size,
-        strides = strides, activation = sigmoid)
+        strides = strides, activation = sigmoid, padding = 'same')
     def call(self, inputs):
         '''
         Again, typical syntax on TensorFlow would prefer x as the variable
