@@ -15,6 +15,7 @@ class Preprocess:
   '''
   def __init__(self, spec_type = 'spec', n_fft = 1024, hop_length = 256, segment_length = 0.5, sr = 22050):
         '''
+        
         Initialize parameters for processing audio.
 
         Parameters:
@@ -22,13 +23,13 @@ class Preprocess:
         - spec_type (str)
         Type of spectrogram used for preprocessing. Currently only allowing for spec and mel_spec as inputs.
 
-        -n_fft: (int)
+        - n_fft: (int)
         Number of points in each Fast Fourier Transformation. Keep to a power of 2. Default set to 1024.
 
-        -hop_length (int)
+        - hop_length (int)
         Number of points to hop from window to window. Default set to 256.
 
-        -segment_length: (numeric)
+        - segment_length: (numeric)
         Length of segemented audio in seconds. Default set to 0.5 seconds.
 
         - sr: (int, optional)
@@ -49,10 +50,10 @@ class DSDPreprocess(Preprocess):
         Target source of extraction. Can be either 'vocals', 'bass', 'drums',
         or 'other'.
 
-        -dsd_path: (str)
+        - dsd_path: (str)
         Path of the DSD 100 dataset.
 
-        -data_path: (str)
+        - data_path: (str)
         Path of where processed data is going to be stored.
       '''
       super().__init__()
@@ -145,17 +146,3 @@ class DSDPreprocess(Preprocess):
             self.data['Mixture'] = []
             self.data['Target'] = []
             print(f'Writing in the file for {dev_test} has been complete.')
-
-################################################################################
-# # Set target
-# target = 'vocals'
-# # Set Spectrogram type
-# spec_type = 'spec'
-# # Have the DSD100 dataset in your current directory called DSD100
-# dsd_path = 'path/to/DSD100'
-# # Have a folder called data to store processed data
-# data_path = 'path/to/stored/data/folder'
-# p = DSDPreprocess(target, dsd_path, data_path)
-# for dev_test in ['Dev', 'Test']:
-#   p.preprocess(dev_test)
-################################################################################
